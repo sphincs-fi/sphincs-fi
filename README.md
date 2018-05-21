@@ -2,6 +2,20 @@ SPHINCS - Fault Injection Attacks
 =================================
 We are currently referring to this code in a submission to a venue that requires anonymous submission. We are going to update this repository in the future.  
 
+Contents of this repository
+===========================
+- [code/](code) contains the code that was executed by the target platform (Arduino Due - ARM Cortex M4)
+- [attack.py](attack.py) contains the attack code, that can be used to create a forgery from [full_sphincs_signature.txt](full_sphincs_signature.txt) and [wotsp_faulty_sigmas.txt](wotsp_faulty_sigmas.txt) - it makes use of [ChaCha.py](ChaCha.py), [blake.py](blake.py), [bytes_utils.py](bytes_utils.py)
+
+- [full_sphincs_signature.txt](full_sphincs_signature.txt) contains the valid SPHINCS signature obtained from the target device
+- [wotsp_valid_sigma.txt](wotsp_valid_sigma.txt) contains the valid W-OTS+ signature obtained from the target device (extracted from [full_sphincs_signature.txt](full_sphincs_signature.txt)) 
+- [wotsp_faulty_sigmas.txt](wotsp_faulty_sigmas.txt) contains 85 faulty W-OTS+ signatures obtained from the target device
+- [wotsp_sigma_prime.txt](wotsp_sigma_prime.txt) contains the forged W-OTS+ signature (existential forgery)
+- [full_sphincs_forged_signature.txt](full_sphincs_forged_signature.txt) containes the forges SPHINCS signature (universal forgery - contains [wotsp_sigma_prime.txt](wotsp_sigma_prime.txt))
+
+- [find_avg_number_of_attempts.py](find_avg_number_of_attempts.py) illustrates how (attack.py)[attack.py] can be used and calculates how many forgery attempts are required if 20 faulty signatures are used 
+- [find_success_prob.py](find_success_prob.py) calculates the success probability of a single forgery attempt using 20 faulty signatures. 
+
 Glitch attack
 =============
 
