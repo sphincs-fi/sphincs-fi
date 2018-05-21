@@ -148,15 +148,16 @@ def wots_leaf(in_H, in_addr, in_sk1, in_masks):
 
 	return root(l_tree(in_H, wots_pk))
 
-def attack(faulty_file, sigs_amount, seed=0):
+def attack(faulty_file, sigs_amount, max_iterations=100, seed=0):
 	"""
 	Attacks CMSS with faulty signatures.
 	"""
 
+	random.seed(seed)
 	faulty_sigs = [bytearray.fromhex(line.rstrip('\n')) for line in open(faulty_file)]
 	wots_pk = verify(exp_root, exp_sigma, in_masks_bytes)
-
-	faulty_sigs = [chunkbytes(fsig, 32) for fsig in faulty_sigs[:sigs_amount]]
+	faulty_sigs = random.sample(faulty_sigs, sigs_amount)
+	faulty_sigs = [chunkbytes(fsig, 32) for fsig in faulty_sigs]
 	faulty_sigs += [exp_sigma]
 
 	masks = chunkbytes(in_masks_bytes, 32)
@@ -177,7 +178,6 @@ def attack(faulty_file, sigs_amount, seed=0):
 
 	count = 0
 	sigma = False
-	random.seed(seed)
 	address = subtree_A
 	xorH = lambda x, y, i: H(xor(x, masks[2*i]), xor(y, masks[2*i+1]))
 
@@ -190,8 +190,10 @@ def attack(faulty_file, sigs_amount, seed=0):
 		tree = l_tree(xorH, leaves)
 		sigma = trysign(root(tree), dico, in_masks_bytes)
 		count += 1
+		if count > max_iterations:
+			return (None, -1)
 
-	print("Amount: " + str(count))
-	print(''.join([toHexString(s) for s in sigma]))
-	print("sk_1: " + toHexString(sk1))
-	return dico
+	#print("Amount: " + str(count))
+	#print(''.join([toHexString(s) for s in sigma]))
+	#print("sk_1: " + toHexString(sk1))
+	return (dico, count)
