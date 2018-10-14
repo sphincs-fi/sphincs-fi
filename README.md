@@ -1,6 +1,8 @@
 SPHINCS - Fault Injection Attacks
 =================================
-We are currently referring to this code in a submission to a venue that requires anonymous submission. We are going to update this repository in the future.  
+
+This work was accepted to [Kangacrypt 2018](https://www.kangacrypt.info/program.php): Aymeric Genêt, Matthias J. Kannwischer, Hervé Pelletier, Andrew McLauchlan, "Practical Fault Injection Attacks on SPHINCS", Kangacrypt 2018
+
 
 Contents of this repository
 ===========================
